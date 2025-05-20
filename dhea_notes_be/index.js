@@ -11,7 +11,34 @@ app.set("view engine", "ejs");
 dotenv.config();
 
 app.use(cookieParser());
-app.use(cors({credentials:true, origin:'https://e-13-450704.uc.r.appspot.com'}));
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://e-13-450704.uc.r.appspot.com'
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
+// Tambahan: handle preflight agar aman
+app.options('*', cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 app.get("/", (req, res) => res.render("index"));
 app.use(UserRoute);
