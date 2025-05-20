@@ -12,7 +12,6 @@ dotenv.config();
 
 app.use(cookieParser());
 const allowedOrigins = [
-  'http://localhost:3000',
   'https://e-13-450704.uc.r.appspot.com'
 ];
 
